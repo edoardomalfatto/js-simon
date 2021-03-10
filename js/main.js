@@ -4,12 +4,12 @@
 //Una volta inseriti i 5 numeri, il 
 //software dice quanti e quali numeri sono stati ricordati.
 
-//popolo un array con 5 numeri casuali che non si ripetono
+
+var arrayNumeriCasuali = [];
+var arrayNumeriInseriti = [];
+
 $(function() {
-
-    var arrayNumeriCasuali = [];
-    setTimeout(inserisciNumero, 3000);
-
+    //popolo un array con 5 numeri casuali che non si ripetono
 
     while (arrayNumeriCasuali.length < 5) {
         var generatedNumber = randomNumbers(1, 100);
@@ -17,23 +17,19 @@ $(function() {
             arrayNumeriCasuali.push(generatedNumber);
         }
     };
+
     //scrivo nel p  i cinque numeri casuali generati
 
     document.getElementById("ancora").innerHTML = arrayNumeriCasuali;
 
-    //chiedo all'utente i cinque numeri
-
-    function inserisciNumero() {
-        document.getElementById("ancora").innerHTML = ('Non puoi più guardare: Inserisci il numero giusto');
-        setTimeout(askNumber, 50);
-    };
+    setTimeout(inserisciNumero, 3000);
 });
 
 //funzioni utilizzate
 
 function randomNumbers(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
-}
+};
 
 function arrayContain(number, array) {
     var trovato = false;
@@ -45,33 +41,35 @@ function arrayContain(number, array) {
     return trovato;
 };
 
-var arrayNumeriInseriti = [];
+//chiedo all'utente i cinque numeri
+
+function inserisciNumero() {
+    document.getElementById("ancora").innerHTML = ('Non puoi più guardare: Inserisci il numero giusto');
+    setTimeout(function() {
+        //chiedo il numero all'utente
+        while (arrayNumeriInseriti.length < 5) {
+
+            var numeroInserito = parseInt(prompt("Inserisci il numero che ricordi"));
+
+            if (arrayContain(numeroInserito, arrayNumeriInseriti) == false) {
+                arrayNumeriInseriti.push(numeroInserito);
 
 
-function askNumber() {
-
-    while (arrayNumeriInseriti.length < 5) {
-
-        var numeroInserito = parseInt(prompt("Inserisci il numero che ricordi"));
-
-        if (arrayContain(numeroInserito, arrayNumeriInseriti) == false) {
-            arrayNumeriInseriti.push(numeroInserito);
-
-
-        } else {
-            alert("Hai già inserito questo numero,inseriscine un altro");
+            } else {
+                alert("Hai già inserito questo numero,inseriscine un altro");
+            }
         }
-    }
+        //se i numeri inseriti sono nell'array dei numeri casuali allora pusho tutto nei numeri indovinati
+
+        var arrayNumeriIndovinati = [];
+        console.log(arrayNumeriInseriti);
+        for (i = 0; i < arrayNumeriInseriti.length; i++) {
+            if ((arrayContain(arrayNumeriInseriti[i], arrayNumeriCasuali)) == true) {
+                arrayNumeriIndovinati.push(arrayNumeriInseriti[i]);
+            }
+        };
+        console.log(arrayNumeriIndovinati);
+        alert("hai indovinato " + arrayNumeriIndovinati.length + " numeri." + " I numeri sono " + arrayNumeriIndovinati);
+    }, 50)
+
 };
-
-//se i numeri inseriti sono nell'array dei numeri casuali allora pusho tutto nei numeri indovinati
-
-var arrayNumeriIndovinati = [];
-console.log(arrayNumeriInseriti);
-for (i = 0; i < arrayNumeriInseriti.length; i++) {
-    if ((arrayContain(arrayNumeriInseriti[i], arrayNumeriCasuali)) == true) {
-        arrayNumeriIndovinati.push(arrayNumeriInseriti[i]);
-    }
-};
-
-/* alert("hai indovinato" + arrayNumeriIndovinati.lenght + " numeri." + " I numeri sono " + arrayNumeriIndovinati); */
